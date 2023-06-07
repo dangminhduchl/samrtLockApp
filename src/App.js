@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
+import CameraCapture from './pages/FaceLogin';
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -35,7 +36,8 @@ function App() {
       <div className="header">
         <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/">Home</NavLink>
         <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/login">Login</NavLink><small>(Access without token only)</small>
-        <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/login">Register</NavLink><small>(Access without token only)</small>
+        <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/facelogin">Face Login</NavLink><small>(Access without token only)</small>
+        <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/register">Register</NavLink>
         <NavLink className={({ isActive }) => isActive ? 'active' : ''} to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
       </div>
       <div className="content">
@@ -44,6 +46,9 @@ function App() {
           <Route index element={<Home />} />
           <Route element={<PublicRoutes />}>
             <Route path="/login" element={<Login />} />
+          </Route>
+          <Route element={<PublicRoutes />}>
+            <Route path="/facelogin" element={<CameraCapture />} />
           </Route>
           <Route>
             <Route path="/register" element={<Register />} />
