@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import axios from 'axios';
+import { postAPI } from '../utils/axios';
 
 const CameraCapture = () => {
   const videoRef = useRef(null);
@@ -9,8 +9,9 @@ const CameraCapture = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (capturedImages.length === 25) {
+    if (capturedImages.length === 1) {
       uploadImages();
+      capturePhoto = []
     }
   }, [capturedImages]);
 
@@ -54,7 +55,7 @@ const CameraCapture = () => {
         return base64Data;
       });
 
-      const response = await axios.post('API_URL', { images: base64Images });
+      const response = await postAPI('/user/face_login/', { image: base64Images})
 
       console.log('Upload response:', response.data);
     } catch (error) {
@@ -68,10 +69,7 @@ const CameraCapture = () => {
   const handleStartCamera = async () => {
     await startCamera();
     await clearImages();
-    if (capturedImages.length <= 25) {
-      setInterval(capturePhoto, 100)
-    }
-    
+    setTimeout(capturePhoto, 200)
     // Gọi hàm clearImages để xóa danh sách ảnh đã chụp sau khi gửi
   };
 
