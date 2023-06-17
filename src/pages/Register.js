@@ -1,62 +1,73 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { setUserSession } from '../utils/common';
-import axios from 'axios';
-import { postAPI } from '../utils/axios';
+import Camera from '../utils/camera';
+import { postAPI } from '../utils/axios'; // Thay thế bằng module gửi request API tương ứng
 
-const Register= props => {
-  const history = useNavigate();
-  const username = useFormInput('');
-  const password = useFormInput('');
-  const email = useFormInput('')
-  const [error, setError] = useState(null);
-  const [message,setMessage] = useState(null)
-  const [loading, setLoading] = useState(false);
+const Register = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [capturedImages, setCapturedImages] = useState([]);
 
-  // handle button click of register form
+  const handleRegister = async () => {
+    if (capturedImages.length !== 50) {
+      console.log('Please capture 50 images before registering.');
+      return;
+    }
 
-  const handleRegister = () => {
-    setError(null);
-    setLoading(true);
-    postAPI('/user/register/', { username: username.value, password: password.value, email: email.value }).then(response => {
-      setLoading(false);
-      setMessage("Dang ki thanh cong, vui long doi admin approve")
-    }).catch(error => {
-      setLoading(false);
-      setError("Something went wrong. Please try again later.");
-    });
-  }
+    try {
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('password', password);
+      formData.append('email', email);
+
+      capturedImages.forEach((image, index) => {
+        formData.append(`image${index + 1}`, image, `image${index + 1}.jpg`);
+      });
+
+      const response = await postAPI('user/register/', formData);
+      console.log('Register response:', response.data);
+    } catch (error) {
+      console.log('Error registering:', error);
+    }
+  };
+
+  const handleCaptureComplete = (images) => {
+    setCapturedImages(images);
+  };
 
   return (
     <div>
-      Login<br /><br />
+      <h3>Register</h3>
+      <label>
+        Username:
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+      </label>
+      <label>
+        Email:
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      </label>
+      <label>
+        Password:
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      </label>
+
+      <Camera onCaptureComplete={handleCaptureComplete} />
+
       <div>
-        Username<br />
-        <input type="text" {...username} autoComplete="new-password" />
+        <h3>Captured Images:</h3>
+        <ul>
+          {capturedImages.map((image, index) => (
+            <li key={index}>
+              <img src={URL.createObjectURL(image)} alt={`Image ${index + 1}`} />
+            </li>
+          ))}
+        </ul>
+        <button onClick={handleRegister} disabled={capturedImages.length !== 50}>
+          Register
+        </button>
       </div>
-      <div style={{ marginTop: 10 }}>
-        Password<br />
-        <input type="password" {...password} autoComplete="new-password" />
-      </div> <div style={{ marginTop: 10 }}>
-        Password<br />
-        <input type="password" {...password} autoComplete="new-password" />
-      </div>
-      {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
-      <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleRegister} disabled={loading} /><br />
     </div>
   );
-}
-
-const useFormInput = initialValue => {
-  const [value, setValue] = useState(initialValue);
-
-  const handleChange = e => {
-    setValue(e.target.value);
-  }
-  return {
-    value,
-    onChange: handleChange
-  }
-}
+};
 
 export default Register;

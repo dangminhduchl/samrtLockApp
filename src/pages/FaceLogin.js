@@ -9,9 +9,10 @@ const CameraCapture = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (capturedImages.length === 1) {
+    if (capturedImages.length === 15) {
       uploadImages();
       capturePhoto = []
+      clearImages()
     }
   }, [capturedImages]);
 
@@ -69,6 +70,7 @@ const CameraCapture = () => {
   const handleStartCamera = async () => {
     await startCamera();
     await clearImages();
+    for (var i =0; i < 15; i++)
     setTimeout(capturePhoto, 200)
     // Gọi hàm clearImages để xóa danh sách ảnh đã chụp sau khi gửi
   };
