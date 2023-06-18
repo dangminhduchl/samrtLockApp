@@ -7,10 +7,11 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [capturedImages, setCapturedImages] = useState([]);
+  const captureCount = 50;
 
   const handleRegister = async () => {
-    if (capturedImages.length !== 50) {
-      console.log('Please capture 50 images before registering.');
+    if (capturedImages.length !== captureCount) {
+      console.log('Please capture ${captureCount} images before registering.');
       return;
     }
 
@@ -51,8 +52,7 @@ const Register = () => {
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </label>
 
-      <Camera onCaptureComplete={handleCaptureComplete} />
-
+      <Camera onCaptureComplete={handleCaptureComplete}captureCount={captureCount} />
       <div>
         <h3>Captured Images:</h3>
         <ul>
@@ -62,7 +62,7 @@ const Register = () => {
             </li>
           ))}
         </ul>
-        <button onClick={handleRegister} disabled={capturedImages.length !== 50}>
+        <button onClick={handleRegister} disabled={capturedImages.length !== captureCount}>
           Register
         </button>
       </div>

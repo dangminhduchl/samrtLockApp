@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-const Camera = ({ onCaptureComplete }) => {
+const Camera = ({ onCaptureComplete, captureCount }) => {
   const videoRef = useRef(null);
   const [capturedImages, setCapturedImages] = useState([]);
 
@@ -21,7 +21,7 @@ const Camera = ({ onCaptureComplete }) => {
   const capturePhotos = async () => {
     const images = [];
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < captureCount; i++) {
       const image = await capturePhoto();
       images.push(image);
     }
