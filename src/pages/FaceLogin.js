@@ -5,13 +5,15 @@ import { postAPI } from '../utils/axios'; // Thay thế bằng module gửi requ
 const FaceLogin = () => {
   const [capturedImages, setCapturedImages] = useState([]);
   const captureCount = 10;
+  const [cameraStatus, setCameraStatus] = useState(true)
 
   const handleFaceLogin = async () => {
     if (capturedImages.length !== 10) {
       console.log('Please capture 10 images before registering.');
+      
       return;
     }
-
+    setCameraStatus(false)
     try {
       const formData = new FormData();
       capturedImages.forEach((image, index) => {
@@ -32,15 +34,18 @@ const FaceLogin = () => {
   return (
     <div>
       <h3>FaceLogin</h3>
-      <Camera onCaptureComplete={handleCaptureComplete} captureCount={captureCount} />
+      { cameraStatus && <Camera onCaptureComplete={handleCaptureComplete} captureCount={captureCount} />}
       <div>
         <h3>Captured Images:</h3>
         <ul>
-          {capturedImages.map((image, index) => (
-            <li key={index}>
-              <img src={URL.createObjectURL(image)} alt={`Image ${index + 1}`} />
-            </li>
-          ))}
+          {capturedImages.length > 0 && capturedImages.map((image, index) => {
+            console.log(image, index)
+            return (
+              <li key={index}>
+                <img src={URL.createObjectURL(image)} alt={`Image ${index + 1}`} />
+              </li>
+            )
+          })}
         </ul>
         <button onClick={handleFaceLogin} disabled={capturedImages.length !== captureCount}>
         FaceLogin

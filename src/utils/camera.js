@@ -3,9 +3,13 @@ import React, { useRef, useEffect, useState } from 'react';
 const Camera = ({ onCaptureComplete, captureCount }) => {
   const videoRef = useRef(null);
   const [capturedImages, setCapturedImages] = useState([]);
+  const [cameraActive, setCameraActive] = useState(true);
 
   useEffect(() => {
     startCamera();
+    return () => {
+      stopCamera();
+    }
   }, []);
 
   const startCamera = () => {
@@ -18,16 +22,28 @@ const Camera = ({ onCaptureComplete, captureCount }) => {
       });
   };
 
+  const stopCamera = () => {
+    const stream = videoRef?.current?.srcObject;
+    const tracks = stream?.getTracks();
+    if (tracks) {
+      tracks.forEach((track) => {
+        track.stop();
+      });
+    }
+  };
+  
   const capturePhotos = async () => {
     const images = [];
 
     for (let i = 0; i < captureCount; i++) {
-      const image = await capturePhoto();
+      const image = capturePhoto();
       images.push(image);
     }
 
     setCapturedImages(images);
     onCaptureComplete(images);
+    setCameraActive(false)
+
   };
 
   const capturePhoto = () => {
