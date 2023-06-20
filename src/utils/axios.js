@@ -3,7 +3,7 @@ import { getToken } from './common';
 
 export const axios_isntance = axios.create({
     baseURL: 'http://localhost:8000',
-    timeout: 8000,
+    timeout: 10000,
 
     headers: {
         Accept: 'application/json',
