@@ -10,10 +10,10 @@ const Register = () => {
   const captureCount = 50;
 
   const handleRegister = async () => {
-    if (capturedImages.length !== captureCount) {
-      console.log('Please capture ${captureCount} images before registering.');
-      return;
-    }
+    // if (capturedImages.length !== captureCount) {
+    //   console.log('Please capture ${captureCount} images before registering.');
+    //   return;
+    // }
 
     try {
       const formData = new FormData();
@@ -62,7 +62,7 @@ const Register = () => {
             </li>
           ))}
         </ul>
-        <button onClick={handleRegister} disabled={capturedImages.length !== captureCount}>
+        <button onClick={handleRegister} >
           Register
         </button>
       </div>
