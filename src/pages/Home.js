@@ -34,7 +34,7 @@ const Home = () => {
   const handleUnlock = async() => {
     // Gửi yêu cầu mở khóa lên server
     try{
-      const response = await postAPI('device/control/', 0);
+      const response = await postAPI('device/control/', {'lock' : 0});
       console.log(response)
     } catch (error) {
       console.log('Error login:', error);
@@ -43,7 +43,7 @@ const Home = () => {
 
   const handleLock = async() => {
     try{
-      const response = await postAPI('device/control/', 1);
+      const response = await postAPI('device/control/', { 'lock' : 1});
       console.log(response)
     } catch (error) {
       console.log('Error login:', error);
