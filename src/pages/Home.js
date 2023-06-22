@@ -4,11 +4,16 @@ import { postAPI } from '../utils/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../home.css'; // Import tệp CSS tại đây
+import { useNavigate } from 'react-router-dom';
+import {getToken} from '../utils/common'
 
 const Home = () => {
   const [status, setStatus] = useState(null);
 
   const { lastMessage } = useWebSocket('ws://localhost:8000/ws/status');
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (lastMessage !== null) {
@@ -35,24 +40,42 @@ const Home = () => {
   }, [status]);
 
   const handleUnlock = async () => {
-    try {
+    const token = getToken();
+    if (!token) {
+      navigate('/facelogin'); // Chuyển hướng đến trang đăng nhập
+      return;
+    }
+    try{
       const response = await postAPI('device/control/', { 'lock': 0 });
       console.log(response);
       toast.success('Unlock successful.'); // Hiển thị thông báo thành công bằng toast.success
     } catch (error) {
-      console.log('Error unlock:', error);
-      toast.error(error.response.data.error); // Hiển thị thông báo lỗi bằng toast.error
+      console.log('Error lock:', error);
+      if (error?.response && error?.response?.data && error?.data?.error) {
+        toast.error(error?.response?.data?.error);
+      } else {
+        toast.error(error?.response?.data?.detail || "Some Thing Went Wrong");
+      }       // Hiển thị thông báo lỗi bằng toast.error
     }
   };
 
   const handleLock = async () => {
+    const token = getToken();
+    if (!token) {
+      navigate('/facelogin'); // Chuyển hướng đến trang đăng nhập
+      return;
+    }
     try {
       const response = await postAPI('device/control/', { 'lock': 1 });
       console.log(response);
       toast.success('Lock successful.'); // Hiển thị thông báo thành công bằng toast.success
     } catch (error) {
       console.log('Error lock:', error);
-      toast.error(error.response.data.error); // Hiển thị thông báo lỗi bằng toast.error
+      if (error?.response && error?.response.data && error?.data.error) {
+        toast.error(error?.response?.data?.error);
+      } else {
+        toast.error("Some Thing Went Wrong");
+      }       // Hiển thị thông báo lỗi bằng toast.error
     }
   };
 

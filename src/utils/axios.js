@@ -7,7 +7,7 @@ export const axios_isntance = axios.create({
 
     headers: {
         Accept: 'application/json',
-        "Authorization": getToken()
+        "Authorization": getToken() ? `Bearer ${getToken()}` : ""
     },
 });
 

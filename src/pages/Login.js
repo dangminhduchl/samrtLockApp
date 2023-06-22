@@ -21,7 +21,7 @@ const Login = props => {
       history('/dashboard');
     }).catch(error => {
       setLoading(false);
-      if (error.response.status === 401) setError(error.response.data.error);
+      if (error?.response?.status === 401) setError(error.response?.data?.error);
       else setError("Something went wrong. Please try again later.");
     });
   }
