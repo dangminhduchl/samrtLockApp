@@ -42,6 +42,7 @@ const Home = () => {
   const handleUnlock = async () => {
     const token = getToken();
     if (!token) {
+      console.log(token)
       navigate('/facelogin'); // Chuyển hướng đến trang đăng nhập
       return;
     }
@@ -71,11 +72,11 @@ const Home = () => {
       toast.success('Lock successful.'); // Hiển thị thông báo thành công bằng toast.success
     } catch (error) {
       console.log('Error lock:', error);
-      if (error?.response && error?.response.data && error?.data.error) {
+      if (error?.response && error?.response?.data && error?.data?.error) {
         toast.error(error?.response?.data?.error);
       } else {
-        toast.error("Some Thing Went Wrong");
-      }       // Hiển thị thông báo lỗi bằng toast.error
+        toast.error(error?.response?.data?.detail || "Some Thing Went Wrong");
+      } // Hiển thị thông báo lỗi bằng toast.error
     }
   };
 
@@ -89,7 +90,6 @@ const Home = () => {
             <p>Door: {door}</p>
             {status.notice && <p>Notice : {notice}</p>}
             <div>
-              <p>Lock: {lock}</p>
               {lock === 0 ? (
                 <button className="lock-button" onClick={handleLock}>Khóa</button>
               ) : (
