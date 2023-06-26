@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { Button } from '@mui/material';
 
 const Camera = ({ onCaptureComplete, captureCount }) => {
   const videoRef = useRef(null);
@@ -66,7 +67,7 @@ const Camera = ({ onCaptureComplete, captureCount }) => {
       <h3>Camera Capture</h3>
       <video ref={videoRef} autoPlay />
 
-      <button onClick={capturePhotos}>Capture Images</button>
+      <Button  variant="contained" onClick={capturePhotos}>Capture Images</Button>
     </div>
   );
 };

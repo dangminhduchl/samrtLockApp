@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Camera from '../utils/camera';
 import { postAPI } from '../utils/axios'; // Thay thế bằng module gửi request API tương ứng
+import { Button } from '@mui/material';
 
 const FaceLogin = () => {
   const [capturedImages, setCapturedImages] = useState([]);
@@ -47,9 +48,9 @@ const FaceLogin = () => {
             )
           })}
         </ul>
-        <button onClick={handleFaceLogin} disabled={capturedImages.length !== captureCount}>
+        <Button variant="contained" onClick={handleFaceLogin} disabled={capturedImages.length !== captureCount}>
         FaceLogin
-        </button>
+        </Button>
       </div>
     </div>
   );

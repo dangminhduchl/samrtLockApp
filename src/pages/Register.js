@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Camera from '../utils/camera';
-import { postAPI } from '../utils/axios'; // Thay thế bằng module gửi request API tương ứng
+import { postAPI } from '../utils/axios';
+import { Button, TextField } from '@mui/material';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -10,11 +11,6 @@ const Register = () => {
   const captureCount = 50;
 
   const handleRegister = async () => {
-    // if (capturedImages.length !== captureCount) {
-    //   console.log('Please capture ${captureCount} images before registering.');
-    //   return;
-    // }
-
     try {
       const formData = new FormData();
       formData.append('username', username);
@@ -39,20 +35,25 @@ const Register = () => {
   return (
     <div>
       <h3>Register</h3>
-      <label>
-        Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </label>
-      <label>
-        Email:
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </label>
-      <label>
-        Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </label>
+      <TextField
+        label="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <TextField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <TextField
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-      <Camera onCaptureComplete={handleCaptureComplete}captureCount={captureCount} />
+      <Camera onCaptureComplete={handleCaptureComplete} captureCount={captureCount} />
       <div>
         <h3>Captured Images:</h3>
         <ul>
@@ -62,9 +63,9 @@ const Register = () => {
             </li>
           ))}
         </ul>
-        <button onClick={handleRegister} >
+        <Button variant="contained" onClick={handleRegister}>
           Register
-        </button>
+        </Button>
       </div>
     </div>
   );

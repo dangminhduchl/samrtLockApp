@@ -6,6 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../home.css'; // Import tệp CSS tại đây
 import { useNavigate } from 'react-router-dom';
 import {getToken} from '../utils/common'
+import { Button } from '@mui/material';
+import { useContext } from 'react';
+import { AuthContext } from '../context';
 
 const Home = () => {
   const [status, setStatus] = useState(null);
@@ -14,7 +17,7 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-
+  const [context, _] = useContext(AuthContext);
   useEffect(() => {
     if (lastMessage !== null) {
       try {
@@ -25,6 +28,7 @@ const Home = () => {
         setStatus(lastMessage.data); // Trả về chuỗi chưa được chuyển đổi
       }
     }
+    console.log(context)
   }, [lastMessage]);
 
   const lock = useMemo(() => {
@@ -91,9 +95,9 @@ const Home = () => {
             {status.notice && <p>Notice : {notice}</p>}
             <div>
               {lock === 0 ? (
-                <button className="lock-button" onClick={handleLock}>Khóa</button>
+                <Button  variant="contained" className="lock-button" onClick={handleLock}>Khóa</Button>
               ) : (
-                <button className="lock-button" onClick={handleUnlock}>Mở khóa</button>
+                <Button  variant="contained" className="lock-button" onClick={handleUnlock}>Mở khóa</Button>
               )}
             </div>
           </div>
