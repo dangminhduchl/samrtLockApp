@@ -3,7 +3,6 @@ import { useWebSocket } from 'react-use-websocket/dist/lib/use-websocket';
 import { postAPI } from '../utils/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../home.css'; // Import tệp CSS tại đây
 import { useNavigate } from 'react-router-dom';
 import {getToken} from '../utils/common'
 import { Button } from '@mui/material';
@@ -28,7 +27,7 @@ const Home = () => {
         setStatus(lastMessage.data); // Trả về chuỗi chưa được chuyển đổi
       }
     }
-    console.log(context)
+    
   }, [lastMessage]);
 
   const lock = useMemo(() => {

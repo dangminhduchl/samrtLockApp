@@ -5,71 +5,75 @@ import { postAPI } from '../utils/axios';
 import { Button, TextField } from '@mui/material';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
+import  FaceLogin  from './FaceLogin'
+import '../login.css';
+import { getUser } from '../utils/common';
 
-const Login = props => {
+const Login = () => {
   const history = useNavigate();
   const username = useFormInput('');
   const password = useFormInput('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [context, setContext] = useContext(AuthContext)
+  const [context, setContext] = useContext(AuthContext);
 
   // handle button click of login form
   const handleLogin = () => {
     setError(null);
     setLoading(true);
-    postAPI('/user/login/', { username: username.value, password: password.value }).then(response => {
-      setLoading(false);
-      setUserSession(response.data.access);
-      setContext({username: username.value})
-      console.log(username.value)
-      history('/dashboard');
-    }).catch(error => {
-      setLoading(false);
-      if (error?.response?.status === 401) setError(error.response?.data?.error);
-      else setError("Something went wrong, please try again");
-    });
-  }
+    postAPI('/user/login/', { username: username.value, password: password.value })
+      .then(response => {
+        setLoading(false);
+        setUserSession(response.data.access);
+        history('/dashboard');
+        setContext((prevContext) => ({ ...prevContext, username: getUser() }));
+      })
+      .catch(error => {
+        setLoading(false);
+        if (error?.response?.status === 401) setError(error.response?.data?.error);
+        else setError('Something went wrong, please try again');
+      });
+  };
 
   return (
-    <div>
-      <h2>Đăng nhập</h2>
-      <div className="input-block">
-        <TextField
-          helperText="Please enter your username"
-          label="Username"
-          name="username"
-          {...username}
-        />
+    <div className="login-container">
+      <div className="login-section">
+        <h2>Login</h2>
+        <div className="input-block">
+          <TextField helperText="Please enter your username" label="Username" name="username" {...username} />
+        </div>
+        <div className="input-block">
+          <TextField
+            helperText="Please enter your password"
+            label="Password"
+            name="password"
+            type="password"
+            {...password}
+          />
+        </div>
+        {error && <small className="error">{error}</small>}
+        <Button variant="contained" className="input-button" onClick={handleLogin} disabled={loading}>
+          {loading ? 'Loading...' : 'Login'}
+        </Button>
       </div>
-      <div className="input-block">
-        <TextField
-          helperText="Please enter your password"
-          label="Password"
-          name="password"
-          type='password'
-          {...password}
-        />
+      <div className="login-section">
+        <FaceLogin />
       </div>
-      {error && <small className="error">{error}</small>}
-      <Button variant="contained" className="input-button" onClick={handleLogin} disabled={loading}>
-        {loading ? 'Loading...' : 'Login'}
-      </Button>
     </div>
   );
-}
+};
 
 const useFormInput = initialValue => {
   const [value, setValue] = useState(initialValue);
 
   const handleChange = e => {
     setValue(e.target.value);
-  }
+  };
 
   return {
     value,
-    onChange: handleChange
-  }
-}
+    onChange: handleChange,
+  };
+};
 
 export default Login;

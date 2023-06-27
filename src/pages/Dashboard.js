@@ -16,10 +16,6 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div className="dashboard-header">
-        Welcome {user?.name}!
-        <button className="logout-button" onClick={handleLogout}>Logout</button>
-      </div>
       <Home />
     </div>
   );

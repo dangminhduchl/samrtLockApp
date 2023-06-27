@@ -1,9 +1,16 @@
-// return the user data from the session storage
 export const getUser = () => {
-  const userStr = sessionStorage.getItem('name');
-  if (userStr) return JSON.parse(userStr);
-  else return null;
-}
+  const token = sessionStorage.getItem('token');
+
+  if (token) {
+    // Decode the token to get the payload
+    const payload = atob(token.split('.')[1]);
+    // Parse the payload to retrieve the user's name
+    const { name } = JSON.parse(payload);
+    return name;
+  } else {
+    return null;
+  }
+};
 
 // return the token from the session storage
 export const getToken = () => {

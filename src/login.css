@@ -1,0 +1,28 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-section {
+  width: 50%;
+  padding: 20px;
+}
+
+.login-section h2 {
+  margin-bottom: 20px;
+}
+
+.input-block {
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.input-button {
+  margin-top: 10px;
+}
