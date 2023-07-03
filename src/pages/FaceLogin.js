@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Camera from '../utils/camera';
 import { postAPI } from '../utils/axios'; // Thay thế bằng module gửi request API tương ứng
 import { Button } from '@mui/material';
+import '../login.css';
 
 const FaceLogin = () => {
   const [capturedImages, setCapturedImages] = useState([]);
@@ -33,11 +34,10 @@ const FaceLogin = () => {
   };
 
   return (
-    <div>
-      <h3>FaceLogin</h3>
+    <div class = 'login-section'>
+      <h2>FaceLogin</h2>
       { cameraStatus && <Camera onCaptureComplete={handleCaptureComplete} captureCount={captureCount} />}
       <div>
-        <h3>Captured Images:</h3>
         <ul>
           {capturedImages.length > 0 && capturedImages.map((image, index) => {
             console.log(image, index)

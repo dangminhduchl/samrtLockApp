@@ -5,7 +5,7 @@ import { postAPI } from '../utils/axios';
 import { Button, TextField } from '@mui/material';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
-import  FaceLogin  from './FaceLogin'
+import FaceLogin from './FaceLogin'
 import '../login.css';
 import { getUser } from '../utils/common';
 
@@ -37,30 +37,38 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="login-section">
-        <h2>Login</h2>
-        <div className="input-block">
-          <TextField helperText="Please enter your username" label="Username" name="username" {...username} />
+      <div className="border">
+        <div className="login-section">
+          <div className='face-login-section'>
+            <h2>Login</h2>
+            <div className="input-block">
+              <TextField
+                helperText="Please enter your username"
+                label="Username"
+                name="username" {...username}
+              />
+              <TextField
+                helperText="Nhập mật khẩu đi địt mẹ mày"
+                label="Password"
+                name="password"
+                type="password"
+                {...password}
+              />
+            </div>
+            {error && <small className="error">{error}</small>}
+            <Button variant="contained" className="input-button" onClick={handleLogin} disabled={loading}>
+              {loading ? 'Loading...' : 'Login'}
+            </Button>
+          </div>
         </div>
-        <div className="input-block">
-          <TextField
-            helperText="Please enter your password"
-            label="Password"
-            name="password"
-            type="password"
-            {...password}
-          />
+        <div className="login-section">
+          <FaceLogin />
         </div>
-        {error && <small className="error">{error}</small>}
-        <Button variant="contained" className="input-button" onClick={handleLogin} disabled={loading}>
-          {loading ? 'Loading...' : 'Login'}
-        </Button>
-      </div>
-      <div className="login-section">
-        <FaceLogin />
       </div>
     </div>
   );
+
+
 };
 
 const useFormInput = initialValue => {

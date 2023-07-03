@@ -63,11 +63,9 @@ const Camera = ({ onCaptureComplete, captureCount }) => {
   };
 
   return (
-    <div>
-      <h3>Camera Capture</h3>
+    <div class='face-login-div'>
       <video ref={videoRef} autoPlay />
-
-      <Button  variant="contained" onClick={capturePhotos}>Capture Images</Button>
+      <Button variant="contained" onClick={capturePhotos}>Capture Images</Button>
     </div>
   );
 };
