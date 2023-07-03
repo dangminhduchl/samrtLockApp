@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Camera from '../utils/camera';
 import { postAPI } from '../utils/axios';
 import { Button, TextField } from '@mui/material';
-
+import '../login.css';
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -33,39 +33,45 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h3>Register</h3>
-      <TextField
-        label="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <TextField
-        label="Email"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <TextField
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+    <div class='login-container'>
+      <div class="border">
+        <div class="login-section">
+          <div class='face-login-section'>
+            <h3>Register</h3>
+            <div class = 'input-block'>
+            <TextField
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            </div>
+          </div>
+        </div>
 
-      <Camera onCaptureComplete={handleCaptureComplete} captureCount={captureCount} />
-      <div>
-        <h3>Captured Images:</h3>
-        <ul>
-          {capturedImages.map((image, index) => (
-            <li key={index}>
-              <img src={URL.createObjectURL(image)} alt={`Image ${index + 1}`} />
-            </li>
-          ))}
-        </ul>
-        <Button variant="contained" onClick={handleRegister}>
-          Register
-        </Button>
+          <div class='login-section'>
+            <h3>FaceRegister</h3>
+            <Camera onCaptureComplete={handleCaptureComplete} captureCount={captureCount} />
+              <ul>
+                {capturedImages.map((image, index) => (
+                  <li key={index}>
+                    <img src={URL.createObjectURL(image)} alt={`Image ${index + 1}`} />
+                  </li>
+                ))}
+              </ul>
+           
+            </div>
       </div>
     </div>
   );
