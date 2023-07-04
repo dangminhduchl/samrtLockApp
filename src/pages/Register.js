@@ -35,43 +35,53 @@ const Register = () => {
   return (
     <div class='login-container'>
       <div class="border">
-        <div class="login-section">
-          <div class='face-login-section'>
-            <h3>Register</h3>
-            <div class = 'input-block'>
-            <TextField
-              label="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <TextField
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+        <div className='register-form'>
+          <div class="login-section">
+
+            <div class='face-login-section'>
+              <div class='input-block'>
+                <h3>Register</h3>
+
+                <TextField
+                  label="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  helperText="Please enter your username"
+                />
+                <TextField
+                  label="Email"
+                  type="email"
+                  helperText="Please enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField
+                  label="Password"
+                  type="password"
+                  helperText="Please enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
           <div class='login-section'>
             <h3>FaceRegister</h3>
             <Camera onCaptureComplete={handleCaptureComplete} captureCount={captureCount} />
-              <ul>
-                {capturedImages.map((image, index) => (
-                  <li key={index}>
-                    <img src={URL.createObjectURL(image)} alt={`Image ${index + 1}`} />
-                  </li>
-                ))}
-              </ul>
-           
-            </div>
+            <ul>
+              {capturedImages.map((image, index) => (
+                <li key={index}>
+                  <img src={URL.createObjectURL(image)} alt={`Image ${index + 1}`} />
+                </li>
+              ))}
+            </ul>
+
+          </div>
+        </div>
+        <Button variant="contained" className="input-button" onClick={handleRegister} >
+          Register
+        </Button>
       </div>
     </div>
   );

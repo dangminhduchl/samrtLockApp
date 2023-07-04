@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setUserSession } from '../utils/common';
 import { postAPI } from '../utils/axios';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Card, CardMedia } from '@mui/material';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
-import FaceLogin from './FaceLogin'
+import FaceLogin from './FaceLogin';
 import '../login.css';
 import { getUser } from '../utils/common';
+import { Image } from '@mui/icons-material';
 
 const Login = () => {
   const history = useNavigate();
@@ -37,28 +38,36 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="border">
+      <div className="border-login">
+        {/* <Card>
+          <CardMedia
+            component="img"
+            src={process.env.PUBLIC_URL + 'public/image/logo_knock.png'}
+            alt="Image Alt Text"
+          />
+        </Card> */}
+        <Image source = {{uri: '../../public/image/logo_knock.png'}} style = {{width:40, height:40}}/>
         <div className="login-section">
           <div className='face-login-section'>
-            <h2>Login</h2>
             <div className="input-block">
-              <TextField
+              <h2>Login</h2>
+              <TextField className='text-field'
                 helperText="Please enter your username"
                 label="Username"
                 name="username" {...username}
               />
-              <TextField
-                helperText="Nhập mật khẩu đi địt mẹ mày"
+              <TextField className='text-field'
+                helperText="Please enter your password"
                 label="Password"
                 name="password"
                 type="password"
                 {...password}
               />
+              {error && <small className="error">{error}</small>}
+              <Button variant="contained" className="input-button" onClick={handleLogin} disabled={loading}>
+                {loading ? 'Loading...' : 'Login'}
+              </Button>
             </div>
-            {error && <small className="error">{error}</small>}
-            <Button variant="contained" className="input-button" onClick={handleLogin} disabled={loading}>
-              {loading ? 'Loading...' : 'Login'}
-            </Button>
           </div>
         </div>
         <div className="login-section">
@@ -67,8 +76,6 @@ const Login = () => {
       </div>
     </div>
   );
-
-
 };
 
 const useFormInput = initialValue => {
