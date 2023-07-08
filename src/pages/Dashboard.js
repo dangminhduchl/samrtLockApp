@@ -1,25 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUser, removeUserSession } from '../utils/common';
-import Home from './Home'
+import Home from './Home';
+import '../dashboard.css'
 
-const Dashboard = props => {
-  const history = useNavigate();
+const Dashboard = () => {
+  const navigate = useNavigate();
   const user = getUser();
 
-  // handle click event of logout button
+  // Xử lý sự kiện click của nút đăng xuất
   const handleLogout = () => {
     removeUserSession();
-    history('/login');
-  }
+    navigate('/login');
+  };
 
   return (
     <div>
-      Welcome {user?.name}!<br /><br />
-      <Home/>
-      <input type="button" onClick={handleLogout} value="Logout" />
+      <Home />
     </div>
   );
-}
+};
 
 export default Dashboard;

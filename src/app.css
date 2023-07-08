@@ -1,0 +1,4 @@
+.app-container{
+  background-image: url('../public/image/background.png');
+  background-size: cover;
+}

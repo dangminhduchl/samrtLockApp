@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Camera from '../utils/camera';
-import { postAPI } from '../utils/axios'; // Thay thế bằng module gửi request API tương ứng
-
+import { postAPI } from '../utils/axios';
+import { Button, TextField } from '@mui/material';
+import '../login.css';
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -10,11 +11,6 @@ const Register = () => {
   const captureCount = 50;
 
   const handleRegister = async () => {
-    // if (capturedImages.length !== captureCount) {
-    //   console.log('Please capture ${captureCount} images before registering.');
-    //   return;
-    // }
-
     try {
       const formData = new FormData();
       formData.append('username', username);
@@ -37,34 +33,55 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h3>Register</h3>
-      <label>
-        Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </label>
-      <label>
-        Email:
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </label>
-      <label>
-        Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </label>
+    <div class='login-container'>
+      <div class="border">
+        <div className='register-form'>
+          <div class="login-section">
 
-      <Camera onCaptureComplete={handleCaptureComplete}captureCount={captureCount} />
-      <div>
-        <h3>Captured Images:</h3>
-        <ul>
-          {capturedImages.map((image, index) => (
-            <li key={index}>
-              <img src={URL.createObjectURL(image)} alt={`Image ${index + 1}`} />
-            </li>
-          ))}
-        </ul>
-        <button onClick={handleRegister} >
+            <div class='face-login-section'>
+              <div class='input-block'>
+                <h3>Register</h3>
+
+                <TextField
+                  label="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  helperText="Please enter your username"
+                />
+                <TextField
+                  label="Email"
+                  type="email"
+                  helperText="Please enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField
+                  label="Password"
+                  type="password"
+                  helperText="Please enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class='login-section'>
+            <h3>FaceRegister</h3>
+            <Camera onCaptureComplete={handleCaptureComplete} captureCount={captureCount} />
+            <ul>
+              {capturedImages.map((image, index) => (
+                <li key={index}>
+                  <img src={URL.createObjectURL(image)} alt={`Image ${index + 1}`} />
+                </li>
+              ))}
+            </ul>
+
+          </div>
+        </div>
+        <Button variant="contained" className="input-button" onClick={handleRegister} >
           Register
-        </button>
+        </Button>
       </div>
     </div>
   );
