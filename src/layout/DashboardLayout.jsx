@@ -14,6 +14,7 @@ import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 import Register from '../pages/Register';
 import CameraCapture from '../pages/FaceLogin';
+import UserList from '../pages/Manage';
 import { getUser } from '../utils/common';
 
 function RouterComponent() {
@@ -58,6 +59,9 @@ function RouterComponent() {
                 <Typography variant="body1" sx={{ marginRight: '16px' }}>
                   Welcome, {context.username}
                 </Typography>
+                <Button color="inherit" component={NavLink} to="/users">
+                  User
+                </Button>
                 <Button color="inherit" onClick={handleLogout}>
                   Logout
                 </Button>
@@ -88,6 +92,7 @@ function RouterComponent() {
             </Route>
             <Route element={<PrivateRoutes />}>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/users" element={<UserList />} />
             </Route>
           </Routes>
         </div>

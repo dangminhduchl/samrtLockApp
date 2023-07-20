@@ -1,7 +1,7 @@
 export const getUser = () => {
   const token = sessionStorage.getItem('token');
 
-  if (token) {
+  if (token && token != 'undefined') {
     // Decode the token to get the payload
     const payload = atob(token.split('.')[1]);
     // Parse the payload to retrieve the user's name

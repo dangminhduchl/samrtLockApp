@@ -45,3 +45,13 @@ export const postAPI = async (url, option) => {
   const response = await axiosInstance.post(url, option);
   return response;
 };
+
+export const putAPI = async (url, option) => {
+  const response = await axiosInstance.put(url, option);
+  return response;
+};
+
+export const deleteAPI = async (url, option) => {
+  const response = await axiosInstance.delete(url, option);
+  return response;
+};
