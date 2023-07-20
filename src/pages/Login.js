@@ -48,7 +48,6 @@ const Login = () => {
         </Card> */}
         <Image source = {{uri: '../../public/image/logo_knock.png'}} style = {{width:40, height:40}}/>
         <div className="login-section">
-          <div className='face-login-section'>
             <div className="input-block">
               <h2>Login</h2>
               <TextField className='text-field'
@@ -68,11 +67,9 @@ const Login = () => {
                 {loading ? 'Loading...' : 'Login'}
               </Button>
             </div>
-          </div>
         </div>
-        <div className="login-section">
+        
           <FaceLogin />
-        </div>
       </div>
     </div>
   );
