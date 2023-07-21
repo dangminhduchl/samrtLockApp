@@ -102,7 +102,7 @@ const UserList = () => {
 
   const handleEncoding = async (id) => {
     try {
-      const response = await postAPI(`/user/user/${id}/encoding/`);
+      const response = await getAPI(`/user/encoding/${id}/`);
       console.log(response);
       // Refresh the users data after encoding
       const updatedUsers = users.map((user) =>
@@ -116,7 +116,7 @@ const UserList = () => {
 
   const handleEncodingAll = async () => {
     try {
-      const response = await postAPI('/user/encode-all/');
+      const response = await postAPI('/user/encodings/');
       console.log(response);
       // Refresh the users data after encoding all
       const updatedUsers = users.map((user) => ({ ...user, encoding: true }));
@@ -128,7 +128,7 @@ const UserList = () => {
 
   const handleDeleteEncoding = async (id) => {
     try {
-      const response = await deleteAPI(`/user/user/${id}/encoding/`);
+      const response = await deleteAPI(`/user/encoding/${id}/`);
       console.log(response);
       // Refresh the users data after deleting encoding
       const updatedUsers = users.map((user) =>
@@ -272,7 +272,7 @@ const UserList = () => {
                   )}
                 </TableCell>
                 <TableCell>
-                  {user.encoding ? (
+                  {user.encode ? (
                     <Tooltip title="Delete Encoding">
                       <IconButton onClick={() => handleDeleteEncoding(user.id)}>
                         <LockIcon />
