@@ -21,7 +21,7 @@ function RouterComponent() {
   const [authLoading, setAuthLoading] = useState(true);
   const [userName, setUserName] = useState('');
 
-  const [context, setContext] = useState({ username: '' });
+  const [context, setContext] = useState({ username: '', superuser:false });
 
   useEffect(() => {
     const token = getToken();
@@ -59,9 +59,9 @@ function RouterComponent() {
                 <Typography variant="body1" sx={{ marginRight: '16px' }}>
                   Welcome, {context.username}
                 </Typography>
-                <Button color="inherit" component={NavLink} to="/users">
-                  User
-                </Button>
+                  <Button color="inherit" component={NavLink} to="/users">
+                    User
+                  </Button>
                 <Button color="inherit" onClick={handleLogout}>
                   Logout
                 </Button>

@@ -25,6 +25,10 @@ import {
   Lock as LockIcon,
 } from '@mui/icons-material';
 import { getAPI, putAPI, deleteAPI, postAPI } from '../utils/axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../login.css';
+import { useNavigate } from 'react-router-dom';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -33,22 +37,38 @@ const UserList = () => {
   const [orderBy, setOrderBy] = useState('id');
   const [order, setOrder] = useState('asc');
   const [editModeRows, setEditModeRows] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const history = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setIsLoading(true);
         const response = await getAPI('/user/users/');
         if (!response || !response.data) {
           throw new Error('No data received from the server');
         }
         setUsers(response.data);
+        setIsLoading(false);
       } catch (error) {
+        
         console.error('Error fetching users:', error);
+        setIsLoading(false);
+        if (error?.response?.status === 401) {
+          // Redirect to login page if unauthorized
+          history('/dashboard');
+          toast.error('Failed to fetch users, please try again');
+        } else {
+          toast.error('Failed to fetch users, please try again');
+        }
       }
     };
 
     fetchUsers();
-  }, []);
+  }, [history]);
+
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -102,41 +122,68 @@ const UserList = () => {
 
   const handleEncoding = async (id) => {
     try {
-      const response = await getAPI(`/user/encoding/${id}/`);
+      setIsLoading(true);
+      const response = await getAPI(`/user/encoding/${id}`);
       console.log(response);
       // Refresh the users data after encoding
       const updatedUsers = users.map((user) =>
-        user.id === id ? { ...user, encoding: true } : user
+        user.id === id ? { ...user, encode: true } : user
       );
       setUsers(updatedUsers);
+      toast.success(response.data.message);
+      setIsLoading(false);
     } catch (error) {
+      if (error?.response?.status === 401) {
+        // Redirect to login page if unauthorized
+        toast.error('You don\'t have right to access this section')
+      }
       console.error('Error encoding user:', error);
-    }
-  };
-
-  const handleEncodingAll = async () => {
-    try {
-      const response = await postAPI('/user/encodings/');
-      console.log(response);
-      // Refresh the users data after encoding all
-      const updatedUsers = users.map((user) => ({ ...user, encoding: true }));
-      setUsers(updatedUsers);
-    } catch (error) {
-      console.error('Error encoding all users:', error);
+      toast.error(error?.response?.data?.error || 'Something went wrong, please try again');
+      setIsLoading(false);
     }
   };
 
   const handleDeleteEncoding = async (id) => {
     try {
-      const response = await deleteAPI(`/user/encoding/${id}/`);
+      setIsLoading(true);
+      const response = await deleteAPI(`/user/encoding/${id}`);
       console.log(response);
       // Refresh the users data after deleting encoding
       const updatedUsers = users.map((user) =>
-        user.id === id ? { ...user, encoding: false } : user
+        user.id === id ? { ...user, encode: false } : user
       );
       setUsers(updatedUsers);
+      toast.success(response.data.message);
+      setIsLoading(false);
     } catch (error) {
+      if (error?.response?.status === 401) {
+        // Redirect to login page if unauthorized
+        toast.error('You don\'t have right to access this section')
+      }
       console.error('Error deleting user encoding:', error);
+      toast.error(error?.response?.data?.error || 'Something went wrong, please try again');
+      setIsLoading(false);
+    }
+  };
+
+  const handleEncodingAll = async () => {
+    try {
+      setIsLoading(true);
+      const response = await postAPI('/user/encodings/');
+      console.log(response);
+      // Refresh the users data after encoding all
+      const updatedUsers = users.map((user) => ({ ...user, encode: true }));
+      setUsers(updatedUsers);
+      toast.success(response.data.message);
+      setIsLoading(false);
+    } catch (error) {
+      if (error?.response?.status === 401) {
+        // Redirect to login page if unauthorized
+        toast.error('You don\'t have right to access this section')
+      }
+      console.error('Error encoding all users:', error);
+      toast.error(error?.response?.data?.error || 'Something went wrong, please try again');
+      setIsLoading(false);
     }
   };
 
@@ -149,6 +196,10 @@ const UserList = () => {
         throw new Error('Failed to delete user');
       }
     } catch (error) {
+      if (error?.response?.status === 401) {
+        // Redirect to login page if unauthorized
+        toast.error('You don\'t have right to access this section')
+      }
       console.error('Error deleting user:', error);
     }
   };
@@ -162,6 +213,10 @@ const UserList = () => {
         throw new Error('Failed to update user');
       }
     } catch (error) {
+      if (error?.response?.status === 401) {
+        // Redirect to login page if unauthorized
+        toast.error('You don\'t have right to access this section')
+      }
       console.error('Error updating user:', error);
     }
   };
@@ -324,12 +379,14 @@ const UserList = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <Button variant="contained" color="primary" onClick={handleEncodingAll}>
-        Encoding All
-      </Button>
-    </Container>
-  );
-};
-
-export default UserList;
+        />
+        <Button variant="contained" color="primary" onClick={handleEncodingAll} disabled={isLoading}>
+          Encoding All
+        </Button>
+        {isLoading && <div>Loading...</div>}
+        <ToastContainer />
+      </Container>
+    );
+  };
+  
+  export default UserList;

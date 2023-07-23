@@ -3,7 +3,7 @@ import { getToken, removeUserSession } from './common';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8000',
-  timeout: 10000,
+  timeout: 10000000,
 });
 
 axiosInstance.interceptors.request.use(
