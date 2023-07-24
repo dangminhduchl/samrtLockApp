@@ -30,7 +30,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../login.css';
 import { useNavigate } from 'react-router-dom';
 
-const UserList = () => {
+const UsersManagement = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -53,14 +53,18 @@ const UserList = () => {
         setIsLoading(false);
       } catch (error) {
         
-        console.error('Error fetching users:', error);
         setIsLoading(false);
         if (error?.response?.status === 401) {
           // Redirect to login page if unauthorized
+          history('/login');
+          toast.error('Failed to fetch users, please try again');
+        } 
+        if (error?.response?.status === 403) {
+          toast.error(error?.response?.data?.detail || 'Something went error, please try again later')
           history('/dashboard');
-          toast.error('Failed to fetch users, please try again');
-        } else {
-          toast.error('Failed to fetch users, please try again');
+        }
+        else {
+          toast.error('Something went error, please try again later')
         }
       }
     };
@@ -101,7 +105,6 @@ const UserList = () => {
         [id]: false,
       }));
     } catch (error) {
-      console.error('Error updating user:', error);
     }
   };
 
@@ -116,7 +119,6 @@ const UserList = () => {
     try {
       await deleteUser(id);
     } catch (error) {
-      console.error('Error deleting user:', error);
     }
   };
 
@@ -124,7 +126,6 @@ const UserList = () => {
     try {
       setIsLoading(true);
       const response = await getAPI(`/user/encoding/${id}`);
-      console.log(response);
       // Refresh the users data after encoding
       const updatedUsers = users.map((user) =>
         user.id === id ? { ...user, encode: true } : user
@@ -133,11 +134,6 @@ const UserList = () => {
       toast.success(response.data.message);
       setIsLoading(false);
     } catch (error) {
-      if (error?.response?.status === 401) {
-        // Redirect to login page if unauthorized
-        toast.error('You don\'t have right to access this section')
-      }
-      console.error('Error encoding user:', error);
       toast.error(error?.response?.data?.error || 'Something went wrong, please try again');
       setIsLoading(false);
     }
@@ -147,7 +143,6 @@ const UserList = () => {
     try {
       setIsLoading(true);
       const response = await deleteAPI(`/user/encoding/${id}`);
-      console.log(response);
       // Refresh the users data after deleting encoding
       const updatedUsers = users.map((user) =>
         user.id === id ? { ...user, encode: false } : user
@@ -156,12 +151,12 @@ const UserList = () => {
       toast.success(response.data.message);
       setIsLoading(false);
     } catch (error) {
-      if (error?.response?.status === 401) {
-        // Redirect to login page if unauthorized
-        toast.error('You don\'t have right to access this section')
+      if (error?.response?.status === 403) {
+        toast.error(error?.response?.data?.detail || 'Something went error, please try again later')
       }
-      console.error('Error deleting user encoding:', error);
+      else{
       toast.error(error?.response?.data?.error || 'Something went wrong, please try again');
+      }
       setIsLoading(false);
     }
   };
@@ -170,25 +165,25 @@ const UserList = () => {
     try {
       setIsLoading(true);
       const response = await postAPI('/user/encodings/');
-      console.log(response);
       // Refresh the users data after encoding all
       const updatedUsers = users.map((user) => ({ ...user, encode: true }));
       setUsers(updatedUsers);
       toast.success(response.data.message);
       setIsLoading(false);
     } catch (error) {
-      if (error?.response?.status === 401) {
-        // Redirect to login page if unauthorized
-        toast.error('You don\'t have right to access this section')
+      if (error?.response?.status === 403) {
+        toast.error(error?.response?.data?.detail || 'Something went error, please try again later')
       }
-      console.error('Error encoding all users:', error);
+      else{
       toast.error(error?.response?.data?.error || 'Something went wrong, please try again');
+      }
       setIsLoading(false);
     }
   };
 
   const deleteUser = async (userId) => {
     try {
+      setIsLoading(true)
       const response = await deleteAPI(`/user/user/${userId}`);
       if (response.status === 204) {
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
@@ -196,16 +191,19 @@ const UserList = () => {
         throw new Error('Failed to delete user');
       }
     } catch (error) {
-      if (error?.response?.status === 401) {
-        // Redirect to login page if unauthorized
-        toast.error('You don\'t have right to access this section')
+      if (error?.response?.status === 403) {
+        toast.error(error?.response?.data?.detail || 'Something went error, please try again later')
       }
-      console.error('Error deleting user:', error);
+      else{
+      toast.error(error?.response?.data?.error || 'Something went wrong, please try again');
+      }
+      setIsLoading(false)
     }
   };
 
   const updateUser = async (user) => {
     try {
+      setIsLoading(true)
       const response = await putAPI(`/user/user/${user.id}/`, user);
       if (response.status === 200) {
         // User updated successfully
@@ -213,11 +211,13 @@ const UserList = () => {
         throw new Error('Failed to update user');
       }
     } catch (error) {
-      if (error?.response?.status === 401) {
-        // Redirect to login page if unauthorized
-        toast.error('You don\'t have right to access this section')
+      if (error?.response?.status === 403) {
+        toast.error(error?.response?.data?.detail || 'Something went error, please try again later')
       }
-      console.error('Error updating user:', error);
+      else{
+      toast.error(error?.response?.data?.error || 'Something went wrong, please try again');
+      }
+      setIsLoading(false)
     }
   };
 
@@ -231,7 +231,7 @@ const UserList = () => {
   return (
     <Container maxWidth="md">
       <Typography variant="h4" component="h1" align="center" gutterBottom>
-        User List
+        Users Managemet
       </Typography>
       <TableContainer>
         <Table>
@@ -389,4 +389,4 @@ const UserList = () => {
     );
   };
   
-  export default UserList;
+  export default UsersManagement;

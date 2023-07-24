@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
-import axios from 'axios';
 import { AuthContext } from '../context';
 
 import PrivateRoutes from '../utils/PrivateRoutes';
 import PublicRoutes from '../utils/PublicRoutes';
-import { getToken, removeUserSession, setUserSession } from '../utils/common';
+import { getToken, getUserId, removeUserSession, setUserSession } from '../utils/common';
 
 import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
@@ -14,16 +13,16 @@ import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 import Register from '../pages/Register';
 import CameraCapture from '../pages/FaceLogin';
-import UserList from '../pages/Manage';
+import UsersManagement from '../pages/UsersManage';
 import { getUser } from '../utils/common';
 
 function RouterComponent() {
   const [authLoading, setAuthLoading] = useState(true);
   const [userName, setUserName] = useState('');
 
-  const [context, setContext] = useState({ username: '', superuser:false });
+  const [context, setContext] = useState({ username: '', id: null });
 
-  useEffect(() => {
+   useEffect(() => {
     const token = getToken();
     if (!token) {
       setAuthLoading(false);
@@ -32,7 +31,7 @@ function RouterComponent() {
     setUserSession(token);
     setUserName(getUser());
     setAuthLoading(false);
-    setContext((prevContext) => ({ ...prevContext, username: getUser() }));
+    setContext((prevContext) => ({ ...prevContext, username: getUser(), id : getUserId() }));
   }, []);
 
   const handleLogout = () => {
@@ -56,9 +55,9 @@ function RouterComponent() {
             </Typography>
             {context.username ? (
               <>
-                <Typography variant="body1" sx={{ marginRight: '16px' }}>
-                  Welcome, {context.username}
-                </Typography>
+                <NavLink to={`/user/${context.username}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    Welcome, {context.username}
+                  </NavLink>
                   <Button color="inherit" component={NavLink} to="/users">
                     User
                   </Button>
@@ -92,7 +91,8 @@ function RouterComponent() {
             </Route>
             <Route element={<PrivateRoutes />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/users" element={<UserList />} />
+              <Route path="/users" element={<UsersManagement />} />
+              {/* <Route path="/user/:username" element={<UserProfile />} /> */}
             </Route>
           </Routes>
         </div>
