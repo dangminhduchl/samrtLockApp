@@ -23,12 +23,14 @@ import {
   Undo as UndoIcon,
   LockOpen as LockOpenIcon,
   Lock as LockIcon,
+  VpnKey as VpnKeyIcon
 } from '@mui/icons-material';
 import { getAPI, putAPI, deleteAPI, postAPI } from '../utils/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../login.css';
 import { useNavigate } from 'react-router-dom';
+import ChangePasswordDialog from './ChangePasswordDialog';
 
 const UsersManagement = () => {
   const [users, setUsers] = useState([]);
@@ -38,6 +40,10 @@ const UsersManagement = () => {
   const [order, setOrder] = useState('asc');
   const [editModeRows, setEditModeRows] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [changePasswordDialogOpen, setChangePasswordDialogOpen] = useState(false);
+  const handleOpenChangePasswordDialog = () => setChangePasswordDialogOpen(true);
+  const handleCloseChangePasswordDialog = () => setChangePasswordDialogOpen(false);
+  const [changingPasswordUserId, setChangingPasswordUserId] = useState(null);
 
   const history = useNavigate();
 
@@ -72,6 +78,30 @@ const UsersManagement = () => {
     fetchUsers();
   }, [history]);
 
+  // Function to handle password change
+  const handleChangePassword = async (oldPassword, newPassword) => {
+    try {
+      // Call the API to change the password
+      await postAPI(`/user/user/${changingPasswordUserId}/`, {
+        old_password: oldPassword,
+        new_password: newPassword,
+      });
+
+      // Handle success response if needed
+      toast.success('Password changed successfully.');
+    } catch (error) {
+      if (error?.response?.data?.old_password) {
+        // Display error related to old_password field
+        toast.error(error.response.data.old_password[0]);
+      } else if (error?.response?.data?.new_password) {
+        // Display error related to new_password field
+        toast.error(error.response.data.new_password[0]);
+      }else{
+      // Handle error response if needed
+      toast.error(error?.response?.data?.error||'Something went wrong, try again later');
+      }
+    }
+  };
 
 
   const handleChangePage = (event, newPage) => {
@@ -340,6 +370,14 @@ const UsersManagement = () => {
                       </IconButton>
                     </Tooltip>
                   )}
+                  <Tooltip title="Change Password">
+                <IconButton onClick={() => {
+                  setChangingPasswordUserId(user.id);
+                  handleOpenChangePasswordDialog();
+                }}>
+                  <VpnKeyIcon />
+                </IconButton>
+              </Tooltip>
                   {editModeRows[user.id] ? (
                     <div>
                       <IconButton onClick={() => handleSave(user.id)}>
@@ -385,6 +423,11 @@ const UsersManagement = () => {
         </Button>
         {isLoading && <div>Loading...</div>}
         <ToastContainer />
+        <ChangePasswordDialog
+        open={changePasswordDialogOpen}
+        onClose={handleCloseChangePasswordDialog}
+        onChangePassword={handleChangePassword}
+      />
       </Container>
     );
   };

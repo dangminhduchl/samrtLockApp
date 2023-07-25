@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setUserSession } from '../utils/common';
+import { getUserId, setUserSession } from '../utils/common';
 import { postAPI } from '../utils/axios';
 import { Button, TextField, Card, CardMedia } from '@mui/material';
 import { useContext } from 'react';
@@ -27,7 +27,7 @@ const Login = () => {
         setLoading(false);
         setUserSession(response.data.access);
         history('/dashboard');
-        setContext((prevContext) => ({ ...prevContext, username: getUser() }));
+        setContext((prevContext) => ({ ...prevContext, username: getUser(), id: getUserId() }));
       })
       .catch(error => {
         setLoading(false);

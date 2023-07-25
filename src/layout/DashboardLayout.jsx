@@ -14,6 +14,7 @@ import NotFound from '../pages/NotFound';
 import Register from '../pages/Register';
 import CameraCapture from '../pages/FaceLogin';
 import UsersManagement from '../pages/UsersManage';
+import UserProfile from '../pages/ChangePasswordDialog';
 import { getUser } from '../utils/common';
 
 function RouterComponent() {
@@ -37,7 +38,7 @@ function RouterComponent() {
   const handleLogout = () => {
     removeUserSession();
     setUserName('');
-    setContext((prevContext) => ({ ...prevContext, username: '' }));
+    setContext((prevContext) => ({ ...prevContext, username: '', id: null }));
     // Perform any additional cleanup or redirection logic
   };
 
@@ -92,7 +93,7 @@ function RouterComponent() {
             <Route element={<PrivateRoutes />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/users" element={<UsersManagement />} />
-              {/* <Route path="/user/:username" element={<UserProfile />} /> */}
+              <Route path="/user/:username" element={<UserProfile />} />
             </Route>
           </Routes>
         </div>

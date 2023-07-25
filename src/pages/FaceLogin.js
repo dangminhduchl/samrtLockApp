@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../login.css';
 import { useContext } from 'react';
-import { setUserSession } from '../utils/common';
+import { getUserId, setUserSession } from '../utils/common';
 import { getUser } from '../utils/common';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context';
@@ -36,7 +36,7 @@ const FaceLogin = () => {
       const response = await postAPI('user/face_login/', formData);
       setUserSession(response.data.access);
       history('/dashboard');
-      setContext((prevContext) => ({ ...prevContext, username: getUser() }));
+      setContext((prevContext) => ({ ...prevContext, username: getUser(), id: getUserId() }));
 
       toast.success('Login successful!');
       console.log('Login response:', response.data);
