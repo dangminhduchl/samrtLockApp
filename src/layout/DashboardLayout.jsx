@@ -16,6 +16,7 @@ import CameraCapture from '../pages/FaceLogin';
 import UsersManagement from '../pages/UsersManage';
 import UserProfile from '../pages/ChangePasswordDialog';
 import { getUser } from '../utils/common';
+import DeviceHistory from '../pages/History';
 
 function RouterComponent() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -62,6 +63,9 @@ function RouterComponent() {
                   <Button color="inherit" component={NavLink} to="/users">
                     User
                   </Button>
+                  <Button color="inherit" component={NavLink} to="/history">
+                    History
+                  </Button>
                 <Button color="inherit" onClick={handleLogout}>
                   Logout
                 </Button>
@@ -94,6 +98,7 @@ function RouterComponent() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/users" element={<UsersManagement />} />
               <Route path="/user/:username" element={<UserProfile />} />
+              <Route path="history" element={<DeviceHistory/>} />
             </Route>
           </Routes>
         </div>
