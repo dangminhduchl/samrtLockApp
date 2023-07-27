@@ -91,7 +91,7 @@ const Home = () => {
           <div>
             <p>Lock: {lock}</p>
             <p>Door: {door}</p>
-            {status.notice && <p>Notice : {notice}</p>}
+            {lock === 1 && door === 0 && <p>Notice : Something went wrong. Door is opened unexpectedly.</p>}
             <div>
               {lock === 0 ? (
                 <Button  variant="contained" className="lock-button" onClick={handleLock}>Khóa</Button>

@@ -57,7 +57,7 @@ function RouterComponent() {
             </Typography>
             {context.username ? (
               <>
-                <NavLink to={`/user/${context.username}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                <NavLink to={`/dashboard`} style={{ color: 'inherit', textDecoration: 'none' }}>
                     Welcome, {context.username}
                   </NavLink>
                   <Button color="inherit" component={NavLink} to="/users">
