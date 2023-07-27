@@ -3,9 +3,11 @@ import { useWebSocket } from 'react-use-websocket/dist/lib/use-websocket';
 import { postAPI } from '../utils/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../home.css'; // Import tệp CSS tại đây
 import { useNavigate } from 'react-router-dom';
 import {getToken} from '../utils/common'
+import { Button } from '@mui/material';
+import { useContext } from 'react';
+import { AuthContext } from '../context';
 
 const Home = () => {
   const [status, setStatus] = useState(null);
@@ -14,7 +16,7 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-
+  const [context, _] = useContext(AuthContext);
   useEffect(() => {
     if (lastMessage !== null) {
       try {
@@ -25,6 +27,7 @@ const Home = () => {
         setStatus(lastMessage.data); // Trả về chuỗi chưa được chuyển đổi
       }
     }
+    
   }, [lastMessage]);
 
   const lock = useMemo(() => {
@@ -42,6 +45,7 @@ const Home = () => {
   const handleUnlock = async () => {
     const token = getToken();
     if (!token) {
+      console.log(token)
       navigate('/facelogin'); // Chuyển hướng đến trang đăng nhập
       return;
     }
@@ -71,11 +75,11 @@ const Home = () => {
       toast.success('Lock successful.'); // Hiển thị thông báo thành công bằng toast.success
     } catch (error) {
       console.log('Error lock:', error);
-      if (error?.response && error?.response.data && error?.data.error) {
+      if (error?.response && error?.response?.data && error?.data?.error) {
         toast.error(error?.response?.data?.error);
       } else {
-        toast.error("Some Thing Went Wrong");
-      }       // Hiển thị thông báo lỗi bằng toast.error
+        toast.error(error?.response?.data?.detail || "Some Thing Went Wrong");
+      } // Hiển thị thông báo lỗi bằng toast.error
     }
   };
 
@@ -87,13 +91,12 @@ const Home = () => {
           <div>
             <p>Lock: {lock}</p>
             <p>Door: {door}</p>
-            {status.notice && <p>Notice : {notice}</p>}
+            {lock === 1 && door === 0 && <p>Notice : Something went wrong. Door is opened unexpectedly.</p>}
             <div>
-              <p>Lock: {lock}</p>
               {lock === 0 ? (
-                <button className="lock-button" onClick={handleLock}>Khóa</button>
+                <Button  variant="contained" className="lock-button" onClick={handleLock}>Khóa</Button>
               ) : (
-                <button className="lock-button" onClick={handleUnlock}>Mở khóa</button>
+                <Button  variant="contained" className="lock-button" onClick={handleUnlock}>Mở khóa</Button>
               )}
             </div>
           </div>

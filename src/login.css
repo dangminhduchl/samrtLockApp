@@ -1,0 +1,89 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.border {
+  display: flex;
+  border: 5px solid #ca1d96;
+  border-radius: 10px;
+  width: 60%;
+  height: 60%;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.border-login {
+  display: flex;
+  border: 5px solid #ca1d96;
+  border-radius: 10px;
+  width: 60%;
+  height: 60%;
+  padding: 20px;
+}
+
+.login-section,
+.face-login-section {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.face-login-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.input-block{
+  align-items: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.register-form{
+  display: flex;
+  flex-grow: 1;
+}
+
+.camera {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+
+}
+.camera-container {
+  width: 90%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.video-preview {
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  margin-bottom: 10px;
+  
+}
+
+.camera-wrapper {
+  margin-bottom: 5px;
+}
+
+.captured-images-wrapper {
+  margin-bottom: 10px;
+}
+
