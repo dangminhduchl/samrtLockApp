@@ -2,12 +2,18 @@ export const getUser = () => {
   const token = sessionStorage.getItem('token');
 
   if (token && token != 'undefined') {
-    // Decode the token to get the payload
-    const payload = atob(token.split('.')[1]);
-    // Parse the payload to retrieve the user's name
-    const { name } = JSON.parse(payload);
+    try {
+      // Decode the token to get the payload
+      const payload = atob(token.split('.')[1]);
+      const { name } = JSON.parse(payload);
 
-    return name;
+      return name;
+    }
+    catch {
+      return token;
+    }
+    // Parse the payload to retrieve the user's name
+
   } else {
     return null;
   }
@@ -17,12 +23,16 @@ export const getUserId = () => {
   const token = sessionStorage.getItem('token');
 
   if (token && token != 'undefined') {
-    // Decode the token to get the payload
-    const payload = atob(token.split('.')[1]);
-    // Parse the payload to retrieve the user's name
-    const { id } = JSON.parse(payload);
-    
-    return id;
+    try {
+      // Decode the token to get the payload
+      const payload = atob(token.split('.')[1]);
+      // Parse the payload to retrieve the user's name
+      const { id } = JSON.parse(payload);
+
+      return id;
+    } catch {
+      return token;
+    }
   } else {
     return null;
   }

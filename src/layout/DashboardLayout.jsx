@@ -8,6 +8,7 @@ import PublicRoutes from '../utils/PublicRoutes';
 import { getToken, getUserId, removeUserSession, setUserSession } from '../utils/common';
 
 import Login from '../pages/Login';
+import Web3Login from '../pages/Web3Login'
 import Dashboard from '../pages/Dashboard';
 import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
@@ -36,7 +37,7 @@ function RouterComponent() {
     setContext((prevContext) => ({ ...prevContext, username: getUser(), id : getUserId() }));
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     removeUserSession();
     setUserName('');
     setContext((prevContext) => ({ ...prevContext, username: '', id: null }));
@@ -57,7 +58,7 @@ function RouterComponent() {
             </Typography>
             {context.username ? (
               <>
-                <NavLink to={`/user/${context.username}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                <NavLink to={`/dashboard`} style={{ color: 'inherit', textDecoration: 'none' }}>
                     Welcome, {context.username}
                   </NavLink>
                   <Button color="inherit" component={NavLink} to="/users">
@@ -75,6 +76,9 @@ function RouterComponent() {
                 <Button color="inherit" component={NavLink} to="/login">
                   Login
                 </Button>
+                <Button color="inherit" component={NavLink} to="/web3login">
+                  Web3Login
+                </Button>
                 <Button color="inherit" component={NavLink} to="/facelogin">
                   Face Login
                 </Button>
@@ -91,6 +95,7 @@ function RouterComponent() {
             <Route index element={<Home />} />
             <Route element={<PublicRoutes />}>
               <Route path="/login" element={<Login />} />
+              <Route path="/web3login" element={<Web3Login />} />
               <Route path="/facelogin" element={<CameraCapture />} />
               <Route path="/register" element={<Register />} />
             </Route>
