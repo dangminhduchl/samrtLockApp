@@ -12,7 +12,11 @@ import { AuthContext } from '../context';
 const Home = () => {
   const [status, setStatus] = useState(null);
 
+  // const [lock, setLock] = useState(null);
+
   const { lastMessage } = useWebSocket('ws://localhost:8000/ws/status');
+
+  console.log(lastMessage)
 
   const navigate = useNavigate();
 

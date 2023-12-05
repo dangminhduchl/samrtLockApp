@@ -15,6 +15,7 @@ import NotFound from '../pages/NotFound';
 import Register from '../pages/Register';
 import CameraCapture from '../pages/FaceLogin';
 import UsersManagement from '../pages/UsersManage';
+import Nft from '../pages/Nft';
 import UserProfile from '../pages/ChangePasswordDialog';
 import { getUser } from '../utils/common';
 import DeviceHistory from '../pages/History';
@@ -61,6 +62,9 @@ function RouterComponent() {
                 <NavLink to={`/dashboard`} style={{ color: 'inherit', textDecoration: 'none' }}>
                     Welcome, {context.username}
                   </NavLink>
+                  <Button color="inherit" component={NavLink} to="/nfts">
+                    Key
+                  </Button>
                   <Button color="inherit" component={NavLink} to="/users">
                     User
                   </Button>
@@ -102,6 +106,7 @@ function RouterComponent() {
             <Route element={<PrivateRoutes />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/users" element={<UsersManagement />} />
+              <Route path="/nfts" element={<Nft />} />
               <Route path="/user/:username" element={<UserProfile />} />
               <Route path="history" element={<DeviceHistory/>} />
             </Route>
