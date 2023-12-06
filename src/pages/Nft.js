@@ -45,7 +45,7 @@ const Nft = () => {
     }
 
     const NFTs = user?.nfts.map(nft => {
-        return <Grid item md={4}>
+        return <Grid item md={3}>
             <Card sx={{ maxWidth: 345 }}>
                 <CardActionArea>
                     <CardMedia

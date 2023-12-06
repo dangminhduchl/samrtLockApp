@@ -14,7 +14,7 @@ const Home = () => {
 
   // const [lock, setLock] = useState(null);
 
-  const { lastMessage } = useWebSocket('ws://localhost:8000/ws/status');
+  const { lastMessage } = useWebSocket('ws://localhost/ws/status');
 
   console.log(lastMessage)
 

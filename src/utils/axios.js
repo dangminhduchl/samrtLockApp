@@ -3,7 +3,7 @@ import { getToken, removeUserSession } from './common';
 import { toast } from 'react-toastify';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'http://localhost',
   timeout: 10000000,
 });
 
